@@ -5,17 +5,19 @@ import { icons } from '@/constants/icons';
 interface SearshBarProps {
 	placeholder: string;
 	onPress?: () => void;
+	value?: string;
+	onChangeText?: (text: string) => void;
 }
 
-const SearchBar = ({placeholder , onPress} : SearshBarProps) => {
+const SearchBar = ({placeholder , onPress , value , onChangeText} : SearshBarProps) => {
 	return (
 		<View className='flex-row items-center bg-dark-200 rounded-full p-5'>
 				<Image source={icons.search} className='size-5' resizeMode='contain' tintColor="#ab8bff" />
 				<TextInput 
 					onPress={onPress}
 					placeholder={placeholder}
-					value=''
-					onChangeText={ () => {} }
+					value={value}
+					onChangeText={onChangeText}
 					placeholderTextColor="#a8b5db"
 					className='flex-1 ml-2 text-white'
 				/>
