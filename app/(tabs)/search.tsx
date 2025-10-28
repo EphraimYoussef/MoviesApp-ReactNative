@@ -1,5 +1,5 @@
 import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { images } from '@/constants/images'
 import { icons } from '@/constants/icons'
 import useFetch from '@/hooks/useFetch'
@@ -8,15 +8,36 @@ import MovieCard from '@/atoms/MovieCard'
 import SearchBar from '@/atoms/SearchBar'
 
 const Search = () => {
-	
+	const [searchQuery,setSearchQuery] = React.useState("")
+
 
 	const { 
 		data : movies,
 		loading,
-		error 
+		error,
+		refetch : loadMovies,
+		reset : resetMovies
 	} = useFetch(
-		() => fetchMovies({query: ""})
+		() => fetchMovies({query: searchQuery}),
+		false
 	);
+
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout( async () => {
+			if(searchQuery.trim()) {
+				await loadMovies();
+			}
+			else{
+				resetMovies();
+			}
+		}, 500);
+
+		return () => clearTimeout(delayDebounceFn);
+
+	}, [searchQuery]);
+
+
 
 	return (
 		<View className="flex-1 bg-primary">
@@ -35,7 +56,11 @@ const Search = () => {
 						</View>
 
 						<View className="px-5 mb-10">
-							<SearchBar placeholder="Search movies..." />
+							<SearchBar 
+								placeholder="Search movies..." 
+								value={searchQuery}
+								onChangeText={(text) => setSearchQuery(text)}
+							/>
 						</View>
 
 						{
@@ -54,14 +79,31 @@ const Search = () => {
 
 
 						{
-							!loading && !error && "SEARCH RESULTS".trim() && movies?.results.length > 0 && (
+							!loading && !error && searchQuery.trim() && movies?.results.length > 0 && (
 								<Text className="text-white text-xl font-bold mb-5 px-5 gap-3">
 									Search Results for {" "}
-									<Text className="text-accent">SEARCH TERM</Text>
+									<Text className="text-accent">{searchQuery}</Text>
 								</Text>
 							)
 						}
 					</>
+				}
+				ListEmptyComponent = {
+					!loading && !error ? (
+						<View className="flex-1 items-center justify-center py-20 opacity-80">
+							<Image
+								source={{ uri: 'https://cdn-icons-png.flaticon.com/512/4076/4076549.png' }}
+								className="w-20 h-20 mb-4 opacity-60"
+								resizeMode="contain"
+							/>
+							<Text className="text-white text-center text-lg font-semibold">
+								No movies found
+							</Text>
+							<Text className="text-gray-400 text-center text-sm mt-1 px-8">
+								Try searching for another title or check your spelling.
+							</Text>
+						</View>
+					) : null
 				}
 				>
 			</FlatList>
