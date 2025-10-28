@@ -1,4 +1,4 @@
-import { TMDB_CONFIG as config } from './TMDB_Config';
+import { TMDB_CONFIG as config } from '../config/TMDB_Config';
 
 export const fetchMovies = async ({query} : {query: string}) => {
 	const endpoint = query
