@@ -2,6 +2,7 @@ import { Text, Image, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Link } from 'expo-router'
 import { icons } from '@/constants/icons'
+import { TMDB_CONFIG } from '@/config/TMDB_Config'
 
 const MovieCard = ({movie} : {movie: Movie}) => {
     return (
@@ -10,7 +11,7 @@ const MovieCard = ({movie} : {movie: Movie}) => {
                 <Image 
                     source={{
                         uri: movie.poster_path ?
-                        `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                        `${TMDB_CONFIG.IMAGE_BASE_URL}${movie.poster_path}`
                         : 'https://placehold.co/500x750/1e293b/94a3b8?text=Poster+Unavailable'
                     }} 
                     className='w-full h-52 rounded-lg mb-2' 

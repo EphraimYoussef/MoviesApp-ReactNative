@@ -1,5 +1,6 @@
 import { Client, Databases, ID, Query } from "react-native-appwrite";
 import { APPWRITE_CONFIG as config } from "@/config/appWrite_Config";
+import { TMDB_CONFIG } from "@/config/TMDB_Config";
 
 
 const client = new Client()
@@ -31,7 +32,7 @@ export const updateSearchCount = async (query : string , movie : Movie) => {
                     searchTerm: query,
                     movieId: movie.id,
                     title: movie.title,
-                    posterURL: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                    posterURL: `${TMDB_CONFIG.IMAGE_BASE_URL}${movie.poster_path}`,
                     count: 1,
                     lang: movie.original_language,
                     releaseYear: movie.release_date.split('-')[0],
