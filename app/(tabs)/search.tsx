@@ -6,6 +6,7 @@ import useFetch from '@/hooks/useFetch'
 import { fetchMovies } from '@/services/TMDB_API'
 import MovieCard from '@/atoms/MovieCard'
 import SearchBar from '@/atoms/SearchBar'
+import { updateSearchCount } from '@/services/appWrite'
 
 const Search = () => {
 	const [searchQuery,setSearchQuery] = React.useState("")
@@ -24,18 +25,24 @@ const Search = () => {
 
 
 	useEffect(() => {
-		const delayDebounceFn = setTimeout( async () => {
-			if(searchQuery.trim()) {
-				await loadMovies();
-			}
-			else{
-				resetMovies();
-			}
+		if (!searchQuery.trim()) {
+			resetMovies();
+			return;
+		}
+
+		const delayDebounceFn = setTimeout(async () => {
+			await loadMovies();
 		}, 500);
 
 		return () => clearTimeout(delayDebounceFn);
-
 	}, [searchQuery]);
+
+	useEffect(() => {
+		if (movies?.results?.length > 0) {
+			updateSearchCount(searchQuery, movies.results[0]);
+		}
+	}, [movies]);
+
 
 
 
