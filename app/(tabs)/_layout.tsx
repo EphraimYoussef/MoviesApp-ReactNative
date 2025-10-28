@@ -21,20 +21,21 @@ const _layout = () => {
         <Label hidden/>
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="search">
+      <NativeTabs.Trigger name="Search">
         <Icon sf={{ default: 'magnifyingglass', selected: 'magnifyingglass' }} drawable="custom_android_drawable" />
         <Label hidden/>
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="profile">
+      <NativeTabs.Trigger name="Saved">
+        <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} drawable="custom_android_drawable" />
+        <Label hidden/>
+      </NativeTabs.Trigger>
+      
+      <NativeTabs.Trigger name="Profile">
         <Icon sf={{ default: 'person', selected: 'person.fill' }} drawable="custom_android_drawable" />
         <Label hidden/>
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="saved">
-        <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} drawable="custom_android_drawable" />
-        <Label hidden/>
-      </NativeTabs.Trigger>
     </NativeTabs>
 	)
 }

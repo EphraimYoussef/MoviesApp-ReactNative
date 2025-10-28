@@ -3,7 +3,7 @@ import React from 'react'
 import { images } from '@/constants/images'
 import { icons } from '@/constants/icons'
 
-const profile = () => {
+const Profile = () => {
 	return (
 		<View className="flex-1 bg-primary">
 			<Image source = {images.bg} className="absolute w-full z-0" />
@@ -18,4 +18,4 @@ const profile = () => {
 	)
 }
 
-export default profile
+export default Profile

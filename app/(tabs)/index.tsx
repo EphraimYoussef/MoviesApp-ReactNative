@@ -10,9 +10,10 @@ import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
 export default function Index() {
   const router = useRouter(); 
 
-  const { data : movies,
-    loading : moviesLoading,
-    error : moviesError 
+  const { 
+    data : movies,
+    loading,
+    error 
   } = useFetch(
     () => fetchMovies({query: ""})
   );
@@ -25,7 +26,7 @@ export default function Index() {
   return (
     <View className="flex-1 bg-primary">
 
-      <Image source = {images.bg} className="absolute w-full z-0" />
+      <Image source = {images.bg} className="flex-1 absolute w-full z-0" resizeMode="cover" />
 
       <ScrollView className="flex-1 px-5" 
         showsVerticalScrollIndicator={false} 
@@ -36,23 +37,23 @@ export default function Index() {
 
         <SearchBar 
           placeholder="Search movies..."
-          onPress={ () => { router.push("/search") } }
+          onPress={ () => { router.push("/Search") } }
         />
 
         {
-          moviesLoading ? (
+          loading ? (
             <ActivityIndicator size="large" color="#0000ff" className="mt-10 self-center" />
           ) 
-          : moviesError ? (
+          : error ? (
             <Text className="text-red-500 text-center mt-10">
-              Error fetching movies: {moviesError?.message}
+              Error fetching movies: {error?.message}
             </Text> 
           ) 
           : (
             <MoviesList movies={ movies.results } />
           )
         }
-        
+
       </ScrollView>
 
     </View>
