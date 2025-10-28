@@ -50,7 +50,7 @@ export default function Index() {
             </Text> 
           ) 
           : (
-            <MoviesList movies={ movies.results } />
+            <MoviesList movies={ movies?.results } />
           )
         }
 
