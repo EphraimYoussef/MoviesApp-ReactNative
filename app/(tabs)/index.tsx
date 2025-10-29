@@ -38,6 +38,7 @@ export default function Index() {
         <SearchBar 
           placeholder="Search movies..."
           onPress={ () => { router.push("/Search") } }
+          editable={false}
         />
 
         {

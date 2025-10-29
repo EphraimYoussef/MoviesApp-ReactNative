@@ -1,5 +1,5 @@
-import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, Image, FlatList, ActivityIndicator, TextInput } from 'react-native'
+import React, { useEffect, useRef } from 'react'
 import { images } from '@/constants/images'
 import { icons } from '@/constants/icons'
 import useFetch from '@/hooks/useFetch'
@@ -7,9 +7,11 @@ import { fetchMovies } from '@/services/TMDB_API'
 import MovieCard from '@/atoms/MovieCard'
 import SearchBar from '@/atoms/SearchBar'
 import { updateSearchCount } from '@/services/appWrite'
+import { useFocusEffect } from 'expo-router'
 
 const Search = () => {
 	const [searchQuery,setSearchQuery] = React.useState("")
+	const inputRef = useRef<TextInput>(null);
 
 
 	const { 
@@ -37,6 +39,7 @@ const Search = () => {
 		return () => clearTimeout(delayDebounceFn);
 	}, [searchQuery]);
 
+
 	useEffect(() => {
 		if (movies?.results?.length > 0) {
 			updateSearchCount(searchQuery, movies.results[0]);
@@ -44,6 +47,15 @@ const Search = () => {
 	}, [movies]);
 
 
+	useFocusEffect(
+		React.useCallback(() => {
+		const timeout = setTimeout(() => {
+			inputRef.current?.focus();
+		}, 200);
+
+		return () => clearTimeout(timeout);
+		}, [])
+	);
 
 
 	return (
@@ -67,6 +79,7 @@ const Search = () => {
 								placeholder="Search movies..." 
 								value={searchQuery}
 								onChangeText={(text) => setSearchQuery(text)}
+								ref={inputRef}
 							/>
 						</View>
 
