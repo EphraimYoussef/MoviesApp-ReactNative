@@ -1,8 +1,10 @@
 import SearchBar from "@/atoms/SearchBar";
 import MoviesList from "@/components/MoviesList";
+import TrendingMovies from "@/components/TrendingMovies";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import useFetch from "@/hooks/useFetch";
+import { getTrendingSearches } from "@/services/appWrite";
 import { fetchMovies } from "@/services/TMDB_API";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
@@ -12,13 +14,18 @@ export default function Index() {
 
   const { 
     data : movies,
-    loading,
-    error 
+    loading: loadingMovies,
+    error: errorMovies 
   } = useFetch(
     () => fetchMovies({query: ""})
   );
   
 
+  const { 
+    data : trendingMovies,
+    loading: loadingTrendingMovies,
+    error: errorTrendingMovies 
+  } = useFetch(getTrendingSearches);
 
 
 
@@ -42,16 +49,23 @@ export default function Index() {
         />
 
         {
-          loading ? (
+          loadingMovies || loadingTrendingMovies ? (
             <ActivityIndicator size="large" color="#0000ff" className="mt-10 self-center" />
           ) 
-          : error ? (
+          : errorMovies || errorTrendingMovies ? (
             <Text className="text-red-500 text-center mt-10">
-              Error fetching movies: {error?.message}
+              Error fetching movies: {errorMovies?.message || errorTrendingMovies?.message}
             </Text> 
           ) 
           : (
-            <MoviesList movies={ movies?.results } />
+            <>
+              {
+                trendingMovies && <TrendingMovies movies={ trendingMovies } />
+              }
+              {
+                movies && <MoviesList movies={ movies?.results } />
+              }
+            </>
           )
         }
 
