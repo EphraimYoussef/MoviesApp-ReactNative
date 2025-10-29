@@ -34,7 +34,7 @@ const Search = () => {
 
 		const delayDebounceFn = setTimeout(async () => {
 			await loadMovies();
-		}, 500);
+		}, 1000);
 
 		return () => clearTimeout(delayDebounceFn);
 	}, [searchQuery]);
