@@ -1,19 +1,11 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
 import TrendingCard from '@/atoms/TrendingCard'
-import { useFonts } from 'expo-font';
 
 const TrendingMovies = ({movies} : {movies : TrendingMovie[]}) => {
-
-    const [fontsLoaded] = useFonts({
-        'BebasNeue-Regular': require('../assets/fonts/BebasNeue-Regular.ttf'),
-    });
-
-    if (!fontsLoaded){ return null;}
-
     return (
         <View className="flex-1 mt-10">
-            <Text className="text-white text-4xl" style={{ fontFamily: 'BebasNeue-Regular' }}>Trending Movies</Text>
+            <Text className="text-white text-3xl font-semibold">Trending Movies</Text>
             <FlatList
                 data={movies}
                 horizontal
