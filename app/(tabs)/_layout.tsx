@@ -2,42 +2,41 @@ import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 import { DynamicColorIOS } from 'react-native';
 
 const _layout = () => {
-	return (
-		<NativeTabs
-      minimizeBehavior='onScrollDown'
+  return (
+    <NativeTabs
+      minimizeBehavior="onScrollDown"
       labelStyle={{
-        color:DynamicColorIOS({
-          dark:'white',
-          light:'black'
-        })
+        color: DynamicColorIOS({
+          dark: 'white',
+          light: 'black',
+        }),
       }}
       tintColor={DynamicColorIOS({
-        dark:'#ab8bff',
-        light:'#7b46e4'
+        dark: '#ab8bff',
+        light: '#7b46e4',
       })}
     >
       <NativeTabs.Trigger name="index">
-        <Icon sf={{ default: 'house', selected: 'house.fill' }} drawable="custom_android_drawable" />
-        <Label hidden/>
+        <Icon sf={{ default: 'house', selected: 'house.fill' }} />
+        <Label hidden />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="Search">
-        <Icon sf={{ default: 'magnifyingglass', selected: 'magnifyingglass' }} drawable="custom_android_drawable" />
-        <Label hidden/>
+        <Icon sf={{ default: 'magnifyingglass', selected: 'magnifyingglass' }} />
+        <Label hidden />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="Saved">
-        <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} drawable="custom_android_drawable" />
-        <Label hidden/>
+        <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} />
+        <Label hidden />
       </NativeTabs.Trigger>
-      
+
       <NativeTabs.Trigger name="Profile">
-        <Icon sf={{ default: 'person', selected: 'person.fill' }} drawable="custom_android_drawable" />
-        <Label hidden/>
+        <Icon sf={{ default: 'person', selected: 'person.fill' }} />
+        <Label hidden />
       </NativeTabs.Trigger>
-
     </NativeTabs>
-	)
-}
+  );
+};
 
-export default _layout
+export default _layout;
