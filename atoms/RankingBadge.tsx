@@ -9,7 +9,7 @@ interface RankingBadgeProps {
 
 const RankingBadge: React.FC<RankingBadgeProps> = ({ index }) => {
     const [fontsLoaded] = useFonts({
-        'BebasNeue-Regular': require('../assets/fonts/BebasNeue-Regular.ttf'),
+        'Anta-Regular': require('../assets/fonts/Anta-Regular.ttf'),
     });
 
     if (!fontsLoaded) return null;
@@ -44,22 +44,22 @@ const RankingBadge: React.FC<RankingBadgeProps> = ({ index }) => {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: 130,
-        left: -12,
+        top: 150,
+        left: -15,
     },
     shadowLayer: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.7,
-        shadowRadius: 8,
+        shadowOffset: { width: 2, height: 5 },
+        shadowOpacity: 0.9,
+        shadowRadius: 4,
     },
     numberText: {
-        fontSize: 95,
+        fontSize: 75,
         fontWeight: '900',
-        fontFamily: 'BebasNeue-Regular',
+        fontFamily: 'anta-Regular',
         color: 'black',
         textShadowColor: 'rgba(0,0,0,0.9)',
-        textShadowOffset: { width: 2, height: 3 },
+        textShadowOffset: { width: 1 , height: 1 },
         textShadowRadius: 5,
     },
     gradient: {
