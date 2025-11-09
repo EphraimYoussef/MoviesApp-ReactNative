@@ -15,6 +15,7 @@ import { TMDB_CONFIG } from "@/config/TMDB_Config";
 import { LinearGradient } from "expo-linear-gradient";
 import { AlarmClock, CalendarDays } from "lucide-react-native";
 import { icons } from "@/constants/icons";
+import SaveButton from "@/atoms/SaveButton";
 
 
 const getFlagEmoji = (countryCode: string) => {
@@ -31,7 +32,7 @@ const MovieDetails = () => {
     fetchMovieDetails(id as string)
   );
 
-  if (loading)
+  if (loading){
     return (
       <View className="flex-1 items-center justify-center bg-primary">
         <ActivityIndicator
@@ -41,6 +42,7 @@ const MovieDetails = () => {
         />
       </View>
     );
+  }
 
   if (error){
     return (
@@ -52,6 +54,7 @@ const MovieDetails = () => {
         </View>
       )
   }
+
   if (!movie){
     return null;
   }
@@ -65,7 +68,7 @@ const MovieDetails = () => {
       showsVerticalScrollIndicator={false}
     >
 
-      <View className="relative h-[350px]">
+      <View className="relative h-[380px]">
         <Image
           source={{ uri: `${imageBase}${movie.backdrop_path || movie.poster_path}` }}
           className="w-full h-full"
@@ -83,12 +86,20 @@ const MovieDetails = () => {
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
         />
-        <View className="absolute bottom-5 left-5 z-10 pr-10">
-          <Text className="text-white text-[28px] font-bold">{movie.title}</Text>
-          {movie.tagline && (
-            <Text className="text-[#bdbdbd] italic mt-1">{movie.tagline}</Text>
-          )}
+        <View className="absolute bottom-5 left-0 right-5 z-10 px-5 flex-row items-center">
+          <View className="flex-1 mr-4">
+            <Text className="text-white text-[28px] font-bold">
+              {movie.title}
+            </Text>
+            {movie.tagline && (
+              <Text className="text-[#bdbdbd] italic mt-1 mr-3">
+                {movie.tagline}
+              </Text>
+            )}
+          </View>
+          <SaveButton />
         </View>
+
       </View>
 
       <View className="flex-row justify-around items-center py-4 border-b border-[#333]">
