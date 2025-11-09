@@ -50,7 +50,12 @@ export default function Index() {
 
         {
           loadingMovies || loadingTrendingMovies ? (
-            <ActivityIndicator size="large" color="#0000ff" className="mt-10 self-center" />
+            <View className="flex-1 items-center justify-center">
+              <ActivityIndicator
+                size="large"
+                color="#ab8bff"
+              />
+            </View>
           ) 
           : errorMovies || errorTrendingMovies ? (
             <Text className="text-red-500 text-center mt-10">

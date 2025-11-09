@@ -63,7 +63,9 @@ const Search = () => {
 			<Image source = {images.bg} className="flex-1 absolute w-full z-0" resizeMode="cover" />
 			<FlatList 
 				data={movies?.results}
-				renderItem={({ item }) => (<MovieCard movie={item} />)}
+				renderItem={({ item }) => (
+					!loading ? <MovieCard movie={item} /> : null
+				)}
 				keyExtractor={(item) => item.id.toString()}
 				numColumns={3}
 				contentContainerStyle={{paddingBottom: 80 }}
@@ -85,7 +87,13 @@ const Search = () => {
 
 						{
 							loading && (
-								<ActivityIndicator size="large" color="#0000ff" className="my-3 self-center" />
+								<View className="flex-1 items-center justify-center">
+									<ActivityIndicator
+										size="large"
+										color="#ab8bff"
+										className="my-[100px]"
+									/>
+								</View>
 							)
 						}
 
