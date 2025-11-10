@@ -21,17 +21,17 @@ const _layout = () => {
         <Label hidden />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="Search">
+      <NativeTabs.Trigger name="search">
         <Icon sf={{ default: 'magnifyingglass', selected: 'magnifyingglass' }} />
         <Label hidden />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="Saved">
+      <NativeTabs.Trigger name="saved">
         <Icon sf={{ default: 'bookmark', selected: 'bookmark.fill' }} />
         <Label hidden />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="Profile">
+      <NativeTabs.Trigger name="profile">
         <Icon sf={{ default: 'person', selected: 'person.fill' }} />
         <Label hidden />
       </NativeTabs.Trigger>
