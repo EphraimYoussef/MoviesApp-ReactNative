@@ -5,7 +5,10 @@ import TrendingCard from '@/atoms/TrendingCard'
 const TrendingMovies = ({movies} : {movies : TrendingMovie[]}) => {
     return (
         <View className="flex-1 mt-10">
-            <Text className="text-white text-3xl font-semibold">Trending Movies</Text>
+            {
+                movies.length > 0 &&
+                <Text className="text-white text-3xl font-semibold">Trending Movies</Text>
+            }
             <FlatList
                 data={movies}
                 horizontal
