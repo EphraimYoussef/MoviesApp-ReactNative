@@ -2,11 +2,15 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { Link } from 'expo-router'
 import { icons } from '@/constants/icons'
 import RankingBadge from './RankingBadge';
+import { updateCountByMovieId } from '@/services/appWrite';
 
 const TrendingCard = ({movie , index} : {movie: TrendingMovie , index: number}) => {
     return (
         <Link href={`/movies/${movie.movieId}`} asChild>
-            <TouchableOpacity className={`w-36 h-96 relative rounded-lg gap-5 mt-5`}>
+            <TouchableOpacity 
+                className={`w-36 h-96 relative rounded-lg gap-5 mt-5`}
+                onPress={() => updateCountByMovieId(movie.movieId)}
+            >
                 <Image
                     source={{ uri: movie.posterURL }}
                     className="w-full h-60 rounded-lg"

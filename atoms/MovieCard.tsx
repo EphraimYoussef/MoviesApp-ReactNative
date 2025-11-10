@@ -3,11 +3,15 @@ import React from 'react'
 import { Link } from 'expo-router'
 import { icons } from '@/constants/icons'
 import { TMDB_CONFIG } from '@/config/TMDB_Config'
+import { updateCountByMovieId } from '@/services/appWrite'
 
 const MovieCard = ({movie} : {movie: Movie}) => {
     return (
         <Link href={`/movies/${movie.id}`} asChild>
-            <TouchableOpacity className='w-[30%]'>
+            <TouchableOpacity 
+                className='w-[30%]'
+                onPress={() => updateCountByMovieId(movie.id)}
+            >
                 <Image 
                     source={{
                         uri: movie.poster_path ?
