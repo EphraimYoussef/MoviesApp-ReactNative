@@ -6,7 +6,7 @@ import useFetch from '@/hooks/useFetch'
 import { fetchMovies } from '@/services/TMDB_API'
 import MovieCard from '@/atoms/MovieCard'
 import SearchBar from '@/atoms/SearchBar'
-import { updateSearchCount } from '@/services/appWrite'
+import { updateCountBySearch } from '@/services/appWrite'
 import { useFocusEffect } from 'expo-router'
 
 const Search = () => {
@@ -42,7 +42,7 @@ const Search = () => {
 
 	useEffect(() => {
 		if (movies?.results?.length > 0) {
-			updateSearchCount(searchQuery, movies.results[0]);
+			updateCountBySearch(movies.results[0]);
 		}
 	}, [movies]);
 
