@@ -7,44 +7,74 @@ import useFetch from "@/hooks/useFetch";
 import { getTrendingSearches } from "@/services/appWrite";
 import { fetchMovies } from "@/services/TMDB_API";
 import { useRouter } from "expo-router";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import { useCallback, useRef, useState } from "react";
+import { ActivityIndicator, Animated, Image, Text, View } from "react-native";
+import * as Haptics from 'expo-haptics';
+import { TopSpinner } from "@/atoms/TopSpinner";
 
 export default function Index() {
   const router = useRouter(); 
+  const [refreshing, setRefreshing] = useState(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const { 
     data : movies,
     loading: loadingMovies,
-    error: errorMovies 
+    error: errorMovies,
+    refetch : refetchMovies
   } = useFetch(
     () => fetchMovies({query: ""})
   );
   
-
   const { 
     data : trendingMovies,
     loading: loadingTrendingMovies,
-    error: errorTrendingMovies 
+    error: errorTrendingMovies,
+    refetch : refetchTrending
   } = useFetch(getTrendingSearches);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([
+      refetchMovies(),
+      refetchTrending()
+    ]);
+    setRefreshing(false);
+  }, [refetchMovies, refetchTrending]);
 
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: true }
+  );
 
+  const handleScrollEndDrag = (event: any) => {
+    const { contentOffset } = event.nativeEvent;
+    if (contentOffset.y < -100 && !refreshing) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      onRefresh();
+    }
+  };
 
   return (
     <View className="flex-1 bg-primary">
 
       <Image source = {images.bg} className="flex-1 absolute w-full z-0" resizeMode="cover" />
 
-      <ScrollView className="flex-1 px-5" 
+      <TopSpinner scrollY={scrollY} />
+
+      <Animated.ScrollView 
+        className="flex-1 px-5" 
         showsVerticalScrollIndicator={false} 
         contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
-        >
-
+        onScroll={handleScroll}
+        onScrollEndDrag={handleScrollEndDrag}
+        scrollEventThrottle={16}
+      >
         <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
 
         <SearchBar 
           placeholder="Search movies..."
-          onPress={ () => { router.push("/Search") } }
+          onPress={() => { router.push("/Search") }}
           editable={false}
         />
 
@@ -64,18 +94,12 @@ export default function Index() {
           ) 
           : (
             <>
-              {
-                trendingMovies && <TrendingMovies movies={ trendingMovies } />
-              }
-              {
-                movies && <MoviesList movies={ movies?.results } />
-              }
+              {trendingMovies && <TrendingMovies movies={trendingMovies} />}
+              {movies && <MoviesList movies={movies?.results} />}
             </>
           )
         }
-
-      </ScrollView>
-
+      </Animated.ScrollView>
     </View>
 
   );
