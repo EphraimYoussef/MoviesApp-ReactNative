@@ -16,7 +16,7 @@ const TrendingMovies = ({movies} : {movies : TrendingMovie[]}) => {
                 showsHorizontalScrollIndicator={false}
                 ItemSeparatorComponent={ () => <View className='w-6'/> }
                 renderItem={ ({ item , index }) => <TrendingCard movie={item} index={index} /> }
-                keyExtractor={(item) => item.movieId.toString() + item.title + item.searchTerm}
+                keyExtractor={(item) => item.movieId.toString()}
             />
         </View>
     )
