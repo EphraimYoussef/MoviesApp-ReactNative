@@ -1,9 +1,15 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { icons } from "@/constants/icons";
+import { useSignIn, useOAuth } from "@clerk/clerk-expo";
+import * as WebBrowser from "expo-web-browser";
+
+
+WebBrowser.maybeCompleteAuthSession();
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address").nonempty("Email is required"),
@@ -13,17 +19,74 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
-  onSubmit: (data: LoginFormData) => void;
   onSwitchToSignup: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToSignup }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
-  const handleGoogle = () => console.log("Login with Google");
-  const handleApple  = () => console.log("Login with Apple");
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const googleOAuth = useOAuth({ strategy: "oauth_google" });
+  const appleOAuth = useOAuth({ strategy: "oauth_apple" });
+
+
+  const handleLogin = async (data: LoginFormData) => {
+    if (!isLoaded){
+      return;
+    }
+    try {
+      const result = await signIn.create({
+        identifier: data.email,
+        password: data.password,
+      });
+      if(result.createdSessionId){
+        await setActive({ session: result.createdSessionId });
+        Alert.alert("Login successful!", "You are now logged in.");
+      }
+      else{
+        Alert.alert("Login failed", "Something went wrong");
+      }
+    } 
+    catch (err: any) {
+      Alert.alert("Login failed", err.errors?.[0]?.message || err.message);
+      return;
+    }
+  };
+
+  const handleGoogle = async () => {
+  try {
+    const { createdSessionId, setActive } = await googleOAuth.startOAuthFlow();
+    if (createdSessionId && setActive) {
+      await setActive({ session: createdSessionId });
+    }
+    else{
+      Alert.alert("Google login failed", "Something went wrong");
+    }
+  }
+  catch (err : any) {
+    Alert.alert("Google login failed", err.errors?.[0]?.message || err.message);
+    return;
+  }
+};
+
+const handleApple = async () => {
+  try {
+    const { createdSessionId, setActive } = await appleOAuth.startOAuthFlow();
+    if (createdSessionId && setActive) {
+      await setActive({ session: createdSessionId });
+    }
+    else{
+      Alert.alert("Apple login failed", "Something went wrong");
+    }
+  } 
+  catch (err : any) {
+    Alert.alert("Apple login failed", err.errors?.[0]?.message || err.message);
+    return;
+  }
+};
+
 
   return (
     <View>
@@ -36,7 +99,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToSignup }) => 
         name="email"
         render={({ field: { onChange, value } }) => (
           <TextInput
-            className="bg-white/10 text-white px-4 py-3 rounded-xl mb-3 border border-white/20"
+            className="bg-white/10 text-white px-4 py-3 rounded-xl mb-2 border border-white/20"
             placeholder="Email"
             placeholderTextColor="#aaa"
             value={value}
@@ -46,14 +109,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToSignup }) => 
           />
         )}
       />
-      {errors.email && <Text className="text-red-500 mb-2">{errors.email.message}</Text>}
+      <View className="flex h-7">
+        {errors.email && <Text className="text-red-500 mb-2 text-sm ml-3">{errors.email.message}</Text>}
+      </View>
 
       <Controller
         control={control}
         name="password"
         render={({ field: { onChange, value } }) => (
           <TextInput
-            className="bg-white/10 text-white px-4 py-3 rounded-xl mb-3 border border-white/20"
+            className="bg-white/10 text-white px-4 py-3 rounded-xl mb-2 border border-white/20"
             placeholder="Password"
             placeholderTextColor="#aaa"
             secureTextEntry
@@ -62,12 +127,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToSignup }) => 
           />
         )}
       />
-      {errors.password && <Text className="text-red-500 mb-2">{errors.password.message}</Text>}
+      <View className="flex h-7">
+        {errors.password && <Text className="text-red-500 mb-2 text-sm ml-3">{errors.password.message}</Text>}
+      </View>
 
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={handleSubmit(onSubmit)}
-        className="mt-5 shadow-md rounded-xl bg-violet-300 py-3"
+        disabled={!isLoaded}
+        onPress={handleSubmit(handleLogin)}
+        className="mt-2 shadow-md rounded-xl bg-violet-300 py-3"
       >
         <Text className="text-[#1a0a4a] font-bold text-center">Login</Text>
       </TouchableOpacity>
@@ -78,7 +146,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToSignup }) => 
         <View className="flex-1 h-[1px] bg-white/20" />
       </View>
 
-      <View className="flex justify-center gap-2">
+      <View className="flex justify-center gap-4">
         <TouchableOpacity
           onPress={handleGoogle}
           activeOpacity={0.8}
