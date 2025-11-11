@@ -97,7 +97,7 @@ const MovieDetails = () => {
               </Text>
             )}
           </View>
-          <SaveButton />
+          <SaveButton movie = {movie} />
         </View>
 
       </View>
