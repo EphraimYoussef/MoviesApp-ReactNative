@@ -12,7 +12,7 @@ const _layout = () => {
         }),
       }}
       tintColor={DynamicColorIOS({
-        dark: '#ab8bff',
+        dark: '#7c3aed',
         light: '#7b46e4',
       })}
     >
