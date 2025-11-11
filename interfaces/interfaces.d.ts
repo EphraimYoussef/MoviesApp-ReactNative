@@ -25,6 +25,16 @@ interface TrendingMovie {
   rate: string;
 }
 
+interface SavedMovie {
+  userId: string;
+  movieId: number;
+  title: string;
+  posterURL: string;
+  lang: string;
+  releaseYear: string;
+  rate: string;
+}
+
 interface MovieDetails {
   adult: boolean;
   backdrop_path: string | null;
