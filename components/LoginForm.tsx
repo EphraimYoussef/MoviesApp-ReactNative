@@ -146,7 +146,7 @@ const handleApple = async () => {
         <View className="flex-1 h-[1px] bg-white/20" />
       </View>
 
-      <View className="flex justify-center gap-4">
+      <View className="flex justify-center gap-3">
         <TouchableOpacity
           onPress={handleGoogle}
           activeOpacity={0.8}
