@@ -113,7 +113,7 @@ export const isSaved = async (movieId : string , userId : string) : Promise<bool
       config.DATABASE_ID!, 
       config.SAVED_COLLECTION_ID!,
       [
-        Query.equal("movieID", movieId),
+        Query.equal("movieId", movieId),
         Query.equal("userId", userId),
       ]
     );
@@ -132,7 +132,7 @@ export const saveMovie = async (movie : Movie, userId: string) : Promise<boolean
       config.DATABASE_ID!,
       config.SAVED_COLLECTION_ID!,
       [
-        Query.equal("movieID", movie.id.toString()),
+        Query.equal("movieId", movie.id.toString()),
         Query.equal("userId", userId),
       ]
     );
@@ -147,7 +147,7 @@ export const saveMovie = async (movie : Movie, userId: string) : Promise<boolean
       config.SAVED_COLLECTION_ID!,
       ID.unique(),
       {
-        movieID: movie.id.toString(),
+        movieId: movie.id.toString(),
         userId: userId,
         title: movie.title,
         posterURL: `${TMDB_CONFIG.IMAGE_BASE_URL}${movie.poster_path}`,
@@ -172,7 +172,7 @@ export const unsaveMovie = async (movieId: string, userId: string) : Promise<boo
       config.DATABASE_ID!,
       config.SAVED_COLLECTION_ID!,
       [
-        Query.equal("movieID", movieId),
+        Query.equal("movieId", movieId),
         Query.equal("userId", userId),
       ]
     );
