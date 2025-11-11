@@ -3,9 +3,20 @@ import React, { useState } from 'react'
 import AuthModal from '@/components/AuthModal'
 import { images } from '@/constants/images';
 import { icons } from '@/constants/icons';
+import { useUser } from "@clerk/clerk-expo";
+import ProfileDetails from '@/components/ProfileDetails';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const Profile = () => {
 	const [showAuth, setShowAuth] = useState(false);
+	const { isSignedIn, isLoaded } = useUser();
+
+	if (!isLoaded) {
+    return <Text>Loading...</Text>;
+  }
+
+
 
   return (
 		<View className="flex-1 bg-primary">
@@ -14,17 +25,43 @@ const Profile = () => {
 				showsVerticalScrollIndicator={false} 
 				contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
 				>
-				<Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto" />
-				<View className='flex items-center justify-center h-60'>
-					<TouchableOpacity
-						className='bg-light-100 px-4 py-2 rounded-xl'
-						onPress={() => setShowAuth(true)}
-					>
-						<Text className='text-primary text-2xl font-semibold ' >Login / Signup</Text>
-					</TouchableOpacity>
-				</View>
+				<Image source={icons.logo} className="w-12 h-10 mt-20  mx-auto" />
 
-				<AuthModal visible={showAuth} onClose={() => setShowAuth(false)} />
+				{	
+					isSignedIn ? (
+						<ProfileDetails />
+					) : (
+						<View className='flex-1 items-center justify-start px-6 mt-32'>
+							<View className='bg-violet-600/10 rounded-full p-8 mb-6 border-2 border-violet-600/20'>
+								<Ionicons name="person-outline" size={64} color="#8b5cf6" />
+							</View>
+							
+							<Text className='text-white text-3xl font-bold mb-3 text-center'>
+								Welcome to Movie App 
+							</Text>
+							<Text className='text-gray-400 text-center mb-8 px-4 '>
+								Sign in to access your profile and {'\n'}
+								your saved movies and more
+							</Text>
+							
+							<TouchableOpacity
+								className='bg-violet-600 px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition-transform'
+								onPress={() => setShowAuth(true)}
+							>
+								<View className='flex-row items-center gap-2'>
+									<Ionicons name="log-in-outline" size={24} color="white" />
+									<Text className='text-white text-lg font-semibold'>
+										Login / Sign Up
+									</Text>
+								</View>
+							</TouchableOpacity>
+							
+							<AuthModal visible={showAuth} onClose={() => setShowAuth(false)} />
+						</View>
+					)
+				}
+				
+
 			</ScrollView>
     </View>
   );
