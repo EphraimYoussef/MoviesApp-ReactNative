@@ -213,17 +213,22 @@ const ProfileDetails = () => {
   };
 
   if (!isLoaded) {
-    return (
-      <View className='flex-1 justify-center items-center bg-[#0f172a]'>
-        <ActivityIndicator size="large" color="#8b5cf6" />
+    return( 
+      <View className="flex-1 items-center justify-center ">
+        <ActivityIndicator
+          size="large"
+          color="#ab8bff"
+        />
       </View>
-    );
+    )
   }
 
   if (!user) {
     return (
-      <View className='flex-1 justify-center items-center bg-[#0f172a]'>
-        <Text className='text-white text-xl'>Please log in</Text>
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-white text-2xl font-bold text-center">
+          No user found
+        </Text>
       </View>
     );
   }
