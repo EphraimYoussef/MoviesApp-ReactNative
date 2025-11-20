@@ -2,6 +2,8 @@
 
 >**A full-featured mobile application built with Expo, React Native, and TypeScript that allows users to discover, search, and save movies through a clean and responsive interface. The application integrates secure authentication via Clerk (Email, Google, and Apple), real-time movie data from TMDB, and backend functionality powered by Appwrite. A custom user‑engagement‑based trending algorithm updates dynamically based on search activity and movie interactions to deliver a personalized and scalable browsing experience.**
 
+---
+
 ## Features
 
 ### Movie Features
@@ -43,6 +45,8 @@
 - Strong type safety using TypeScript
 
 
+---
+
 ## Tech Stack
 
 -   Framework: React Native
@@ -55,6 +59,8 @@
 -   Navigation: Expo Router
 -   Tooling: ESLint, Metro, TypeScript
 
+
+---
 
 ## Architecture & Project Structure
 
@@ -70,6 +76,9 @@
     ├── types/                 # Shared TypeScript types
     ├── .env.example           # Environment variable template
     └── ...
+
+
+---
 
 ## Setup & Installation
 
@@ -132,6 +141,8 @@
     - The Expo Metro server will provide a QR code for device testing
     - Open the app on your device or simulator to ensure everything works
     - Check the terminal for any errors during startup
+
+---
 
 ## Usage
 
