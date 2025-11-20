@@ -205,6 +205,7 @@ export const getSavedMovies = async (userId: string) : Promise<SavedMovie[]> => 
       config.SAVED_COLLECTION_ID!,
       [
         Query.equal("userId", userId),
+        Query.orderDesc("$createdAt"),
       ]
     );
     return result.documents as unknown as SavedMovie[];
