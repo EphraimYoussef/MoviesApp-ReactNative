@@ -13,6 +13,7 @@ import {
 import { useUser, useClerk } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { BlurView } from 'expo-blur';
 
 const ProfileDetails = () => {
   const { user, isLoaded } = useUser();
@@ -234,60 +235,67 @@ const ProfileDetails = () => {
   }
 
   return (
-    <ScrollView className='flex-1 h-full mb-32'>
-      <View className='bg-gradient-to-b from-violet-600 to-purple-800 pt-16 pb-20'>
+    <ScrollView className='flex-1 h-full mb-32 mt-14'>
 
-        <View className='items-center'>
-
-          <View className='relative'>
-
-            {/* Loading indicator */}
-            {
-              uploadingImage && (
-                <View className='absolute inset-0 z-10 items-center justify-center bg-black/50 rounded-full w-28 h-28'>
-                  <ActivityIndicator size="large" color="#8b5cf6" />
-                </View>
-              )
-            }
-
-            {/* Profile picture */}
-            {
-              user.imageUrl ? (
-                <Image 
-                  source={{ uri: user.imageUrl }} 
-                  className='w-28 h-28 rounded-full border-4 border-white'
-                />
-              ) : (
-                <View className='w-28 h-28 bg-violet-400 rounded-full items-center justify-center border-4 border-white'>
-                  <Text className='text-white text-5xl font-bold'>
-                    {user.firstName?.[0]}{user.lastName?.[0]}
-                  </Text>
-                </View>
-              )
-            }
-            
-
-            {/* Camera badge */}
-            {
-              !isEditing && (
-                <TouchableOpacity 
-                  onPress={() => setShowImageOptions(true)}
-                  className='absolute bottom-0 right-0 bg-violet-500 rounded-full p-2 border-2 border-white'
-                  disabled={uploadingImage}
-                >
-                  <Ionicons name="camera" size={16} color="white" />
-                </TouchableOpacity>
-              )
-            }
-          </View>
-
-        </View>
-
-      </View>
 
       {/* Main Content Card */}
-      <View className='px-6 -mt-12'>
-        <View className='bg-extra rounded-3xl p-6 shadow-2xl border border-slate-700'>
+        <BlurView intensity={70} tint="dark" className="w-full rounded-3xl overflow-hidden border border-white/10 p-7">
+
+          <View className='items-center flex-row mb-5 justify-center'>
+
+            <View className='relative'>
+
+              {/* Loading indicator */}
+              {
+                uploadingImage && (
+                  <View className='absolute inset-0 z-10 items-center justify-center bg-black/50 rounded-full w-28 h-28'>
+                    <ActivityIndicator size="large" color="#8b5cf6" />
+                  </View>
+                )
+              }
+
+              {/* Profile picture */}
+              {
+                user.imageUrl ? (
+                  <Image 
+                    source={{ uri: user.imageUrl }} 
+                    className='w-28 h-28 rounded-full border-4 border-white'
+                  />
+                ) : (
+                  <View className='w-28 h-28 bg-violet-400 rounded-full items-center justify-center border-4 border-white'>
+                    <Text className='text-white text-5xl font-bold'>
+                      {user.firstName?.[0]}{user.lastName?.[0]}
+                    </Text>
+                  </View>
+                )
+              }
+              
+
+              {/* Camera badge */}
+              {
+                !isEditing && (
+                  <TouchableOpacity 
+                    onPress={() => setShowImageOptions(true)}
+                    className='absolute bottom-0 right-0 bg-violet-500 rounded-full p-2 border-2 border-white'
+                    disabled={uploadingImage}
+                  >
+                    <Ionicons name="camera" size={16} color="white" />
+                  </TouchableOpacity>
+                )
+              }
+            </View>
+
+            <View className='flex-1 ml-4 justify-start gap-1'>
+              <Text className='text-white text-2xl font-bold'>
+                {user.firstName} {user.lastName}
+              </Text>
+              <Text className='text-gray-400'>
+                {user.emailAddresses?.[0]?.emailAddress}
+              </Text>
+            </View>
+            
+          </View>
+
           {
             isEditing ? (
               // Edit Mode
@@ -349,13 +357,11 @@ const ProfileDetails = () => {
               </View>
             ) : (
               // View Mode
+
+              
+
               <View className='flex-1 gap-5'>
-                <Text className='text-white text-3xl font-bold text-center mb-2'>
-                  {user.firstName} {user.lastName}
-                </Text>
-                <Text className='text-gray-400 text-center mb-6'>
-                  {user.emailAddresses?.[0]?.emailAddress}
-                </Text>
+                
 
                 {/* Edit Profile Button */}
                 <TouchableOpacity
@@ -367,23 +373,7 @@ const ProfileDetails = () => {
                 </TouchableOpacity>
 
                 {/* Info Cards */}
-                <View className='space-y-3 mb-6 flex gap-3'>
-                  {/* User ID */}
-                  <View className='bg-slate-800 rounded-xl p-4 border border-slate-700'>
-                    <View className='flex-row items-center justify-between'>
-                      <View className='flex-row items-center flex-1'>
-                        <View className='bg-violet-600/20 rounded-full p-2 mr-3'>
-                          <Ionicons name="finger-print" size={20} color="#8b5cf6" />
-                        </View>
-                        <View className='flex-1'>
-                          <Text className='text-gray-400 text-xs mb-1'>User ID</Text>
-                          <Text className='text-white font-medium' numberOfLines={1}>
-                            {user.id.slice(0, 20)}...
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
+                <View className='space-y-3 mb-6 flex gap-4'>
 
                   {/* Email */}
                   <View className='bg-slate-800 rounded-xl p-4 border border-slate-700'>
@@ -469,8 +459,7 @@ const ProfileDetails = () => {
               </View>
             )
           }
-        </View>
-      </View>
+        </BlurView>
 
       {/* Delete Confirmation Modal */}
       <Modal
