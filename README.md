@@ -155,3 +155,8 @@
 - Edit your profile information and update your profile picture (choose from gallery, take a new photo, or remove the current picture)
 - Delete your account to remove all personal data
 
+---
+
+## Video
+
+https://github.com/user-attachments/assets/f680e9f6-4466-43ed-94d9-4d548660a1f9
